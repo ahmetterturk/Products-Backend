@@ -11,6 +11,13 @@ export const initialiseDatabase = async () => {
       useFindAndModify: false
     });
 
+    // Check if any admin user exists
+    const adminUserExists = await User.exists({ isAdmin: true });
+    if (adminUserExists) {
+      console.log('Admin user already exists. Skipping initialisation.');
+      return;
+    }
+
     // Clear the database of all SoldItem records
     await SoldItem.deleteMany({});
 
