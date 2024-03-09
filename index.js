@@ -8,7 +8,7 @@ import { initialiseDatabase } from './initialise.js';
 
 import productRoutes from './routes/products.js';
 import userRoutes from "./routes/users.js";
-// import soldItemRoutes from "./routes/soldItems.js";
+import soldItemRoutes from "./routes/soldItems.js";
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use('/products', productRoutes);
 app.use('/users', userRoutes);
-// app.use('/sold-items', soldItemRoutes);
+app.use('/sold-items', soldItemRoutes);
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT|| 5000;
