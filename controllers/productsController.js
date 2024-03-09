@@ -14,6 +14,21 @@ export const getProducts = async (req, res) => {
   }
 }
 
+export const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await axios.get(`https://dummyjson.com/products/${id}`);
+    const product = response.data;
+    const responseStatus = response.status;
+
+    res.status(responseStatus).json(product);
+  } catch (error) {
+    console.error("Error fetching product by ID:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 export const addProduct = async (req, res) => {
   try {
     const headers = {
@@ -44,13 +59,7 @@ export const editProduct = async (req, res) => {
       'Content-Type': 'application/json'
     }
 
-    const data = {
-      title: "Flying Skate Board",
-      description: "Just hop on and fly",
-      price: 100,
-    }
-
-    const response = await axios.put(`https://dummyjson.com/products/${id}`, data, headers)
+    const response = await axios.put(`https://dummyjson.com/products/${id}`, req.body, headers)
     const product = response.data
     const responseStatus = response.status
     
