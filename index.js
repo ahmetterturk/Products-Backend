@@ -4,14 +4,16 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 
 import productRoutes from './routes/products.js';
-import userRouter from "./routes/users.js";
+import userRoutes from "./routes/users.js";
+import soldItemRoutes from "./routes/soldItems.js";
 
 const app = express();
 
 app.use(cors());
 
 app.use('/products', productRoutes);
-app.use('/users', userRouter);
+app.use('/users', userRoutes);
+app.use('/sold-items', soldItemRoutes);
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT|| 5000;
