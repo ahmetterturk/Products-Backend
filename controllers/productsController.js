@@ -8,7 +8,7 @@ export const getProducts = async (req, res) => {
     const products = response.data
     const responseStatus = response.status
 
-    res.status(200).json(products);
+    res.status(responseStatus).json(products);
   } catch (error) {
     console.log("This is error")
   }
@@ -16,7 +16,21 @@ export const getProducts = async (req, res) => {
 
 export const addProduct = async (req, res) => {
   try {
-    res.send('This is add products')
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+
+    const data = {
+      title: "Flying Skate Board",
+      description: "Just hop on and fly",
+      price: 100,
+    }
+
+    const response = await axios.post('https://dummyjson.com/products/add', data, headers)
+    const product = response.data
+    const responseStatus = response.status
+
+    res.status(responseStatus).json(product);
   } catch (error) {
     console.log("This is error")
   }
@@ -24,9 +38,25 @@ export const addProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
   try {
-    res.send('This is edit products')
+    const { id } = req.params;
+
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+
+    const data = {
+      title: "Flying Skate Board",
+      description: "Just hop on and fly",
+      price: 100,
+    }
+
+    const response = await axios.put(`https://dummyjson.com/products/${id}`, data, headers)
+    const product = response.data
+    const responseStatus = response.status
+    
+    res.status(responseStatus).json(product);
   } catch (error) {
-    console.log("This is error")
+    console.log("This is error", error)
   }
 }
 
