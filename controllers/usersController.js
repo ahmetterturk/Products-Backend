@@ -1,6 +1,5 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import User from '../models/User'
 
 import User from '../models/User.js';
 
@@ -49,12 +48,19 @@ export const editUser = async (req, res) => {
   }
 }
 
-
 export const login = async (req, res) => {
   try {
-    
-  } catch (error) {
-    console.log("This is error")
-  }
-}
+    const { email, password } = req.body;
 
+    const user = await User.findOne({ email, password });
+
+    if (user) {
+      return res.json({ success: true, user });
+    } else {
+      return res.json({ success: false });
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};

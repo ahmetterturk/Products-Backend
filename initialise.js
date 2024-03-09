@@ -51,6 +51,6 @@ export const initialiseDatabase = async () => {
     console.error('Initialisation error:', error);
   } finally {
     // Close the MongoDB connection
-    await mongoose.disconnect();
+    // await mongoose.disconnect();
   }
 };
