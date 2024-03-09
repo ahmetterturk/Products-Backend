@@ -1,0 +1,60 @@
+import express from 'express'
+import mongoose from 'mongoose'
+import User from '../models/User'
+
+import User from '../models/User.js';
+
+export const createUser = async (req, res) => {
+  try {
+    const { email, password, isAdmin, permissions } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const newUser = new User({ email, password, isAdmin, permissions });
+
+    await newUser.save();
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+export const editUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { email, password, isAdmin, permissions } = req.body;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (email) user.email = email;
+    if (password) user.password = password;
+    if (isAdmin !== undefined) user.isAdmin = isAdmin;
+    if (permissions) user.permissions = permissions;
+
+    await user.save();
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error editing user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+export const login = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    console.log("This is error")
+  }
+}
+
