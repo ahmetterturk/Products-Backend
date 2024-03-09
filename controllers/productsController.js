@@ -34,14 +34,8 @@ export const addProduct = async (req, res) => {
     const headers = {
       'Content-Type': 'application/json'
     }
-
-    const data = {
-      title: "Flying Skate Board",
-      description: "Just hop on and fly",
-      price: 100,
-    }
-
-    const response = await axios.post('https://dummyjson.com/products/add', data, headers)
+    
+    const response = await axios.post('https://dummyjson.com/products/add', req.body, headers)
     const product = response.data
     const responseStatus = response.status
 
