@@ -16,7 +16,6 @@ export const getAllUsers = async (req, res) => {
 export const getSingleUser = async (req, res) => {
   try {
     const { id } = req.params;
-
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -31,7 +30,11 @@ export const getSingleUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { email, password, isAdmin, permissions } = req.body;
+    const { email, password, isAdmin, permissions, adminData } = req.body;
+
+    if (!adminData || !adminData.isAdmin) {
+      return res.status(403).json({ message: 'Unauthorized: Only admin users can create new users' });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -53,8 +56,12 @@ export const createUser = async (req, res) => {
 export const editUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { email, password, isAdmin, permissions } = req.body;
+    const { email, password, isAdmin, permissions, adminData } = req.body;
 
+    if (!adminData || !adminData.isAdmin) {
+      return res.status(403).json({ message: 'Unauthorized: Only admin users can create new users' });
+    }
+    
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
