@@ -49,19 +49,26 @@ export const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const headers = {
-      'Content-Type': 'application/json'
+    const userData = req.body.userData;
+
+    if (userData.user.isAdmin === false && userData.user.permissions !== 'edit') {
+      return res.status(403).json({ error: 'Unauthorized' });
     }
 
-    const response = await axios.put(`https://dummyjson.com/products/${id}`, req.body, headers)
-    const product = response.data
-    const responseStatus = response.status
-    
+    const newData = req.body.newData;
+
+    const response = await axios.put(`https://dummyjson.com/products/${id}`, newData);
+
+    const product = response.data;
+    const responseStatus = response.status;
+
     res.status(responseStatus).json(product);
   } catch (error) {
-    console.log("This is error", error)
+    console.error("Error editing product:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-}
+};
+
 
 // extra
 export const searchProducts = async (req, res) => {
