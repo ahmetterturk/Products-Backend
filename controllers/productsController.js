@@ -66,8 +66,16 @@ export const editProduct = async (req, res) => {
 // extra
 export const searchProducts = async (req, res) => {
   try {
-    res.send('This is get Search')
+    const { q } = req.query;
+    console.log('q', q);
+    const response = await axios.get(`https://dummyjson.com/products/search?q=${q}`);
+    const searchResults = response.data;
+
+    console.log('searchResults', searchResults);
+
+    res.json(searchResults);
   } catch (error) {
-    console.log("This is error")
+    console.error('Error searching products:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-}
+};
